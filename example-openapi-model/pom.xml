@@ -7,14 +7,14 @@
 	<version>1.9.91-SNAPSHOT</version>
 
 	<repositories>
-	    <repository>
-	        <id>oss-sonatype</id>
-	        <name>oss-sonatype</name>
-	        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-	        <snapshots>
-	            <enabled>true</enabled>
-	        </snapshots>
-	    </repository>
+		<repository>
+			<id>oss-sonatype</id>
+			<name>oss-sonatype</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -24,24 +24,26 @@
 			<version>7.0.0-20230810.155836-261</version>
 			<scope>provided</scope>
 		</dependency>
-		
-	    <dependency>
-	      <groupId>javax.annotation</groupId>
-	      <artifactId>javax.annotation-api</artifactId>
-	      <version>1.3.2</version>
-	    </dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 
 		<!-- https://github.com/bsideup/jabel -->
-		<!-- But, since most of features after Java 8 did not require a change in the bytecode, javac could emit Java 8 bytecode even when compiling Java 12 sources. -->
-        <dependency>
-            <groupId>com.github.bsideup.jabel</groupId>
-            <artifactId>jabel-javac-plugin</artifactId>
-            <version>0.4.1</version>
-            <scope>provided</scope>
-        </dependency>
-	    
+		<!-- But, since most of features after Java 8 did not require a change
+		in the bytecode, javac could emit Java 8 bytecode even when compiling
+		Java 12 sources. -->
+		<dependency>
+			<groupId>com.github.bsideup.jabel</groupId>
+			<artifactId>jabel-javac-plugin</artifactId>
+			<version>0.4.1</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
-		
+
 	<build>
 		<plugins>
 			<plugin>
@@ -54,21 +56,21 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-compiler-plugin</artifactId>
-			    <version>3.8.0</version>
-                <configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
 					<!-- Make sure we're not using Java 9+ APIs -->
-                    <release>8</release>
-                    <source>11</source>
-                    <target>11</target>
+					<release>8</release>
+					<source>11</source>
+					<target>11</target>
 					<!-- The following setting can be avoided on Java 14 and higher -->
-                    <compilerArgs>
-                        <arg>-Xplugin:jabel</arg>
-                    </compilerArgs>
-                </configuration>
+					<compilerArgs>
+						<arg>-Xplugin:jabel</arg>
+					</compilerArgs>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -85,14 +87,15 @@
 						<configuration>
 							<classpathScope>compile</classpathScope>
 							<mainClass>org.openapitools.codegen.OpenAPIGenerator</mainClass>
-							<sourceRoot>${project.build.directory}/generated-sources/swagger</sourceRoot>
+							<sourceRoot>
+								${project.build.directory}/generated-sources/swagger</sourceRoot>
 							<arguments>
-            					<argument>generate</argument>
-            					<argument>-g</argument>
-            					<argument>jaxrs-jersey</argument>
-            					<argument>-i</argument>
-            					<argument>target\classes\swagger\petstore-v2-edit.yaml</argument>
-            					<argument>-o</argument>
+								<argument>generate</argument>
+								<argument>-g</argument>
+								<argument>jaxrs-jersey</argument>
+								<argument>-i</argument>
+								<argument>target\classes\swagger\petstore-v2-edit.yaml</argument>
+								<argument>-o</argument>
 								<argument>${project.build.directory}/generated-sources/swagger</argument>
 								<argument>--parameter-name-mappings</argument>
 								<argument>setComplete=fieldSetComplete</argument>
@@ -102,32 +105,32 @@
 								<argument>com.petstore.dto.gen</argument>
 								<argument>--global-property=models,apiDocs=false,modelDocs=false,apiTests=false,modelTests=false</argument>
 								<argument>--additional-properties=dateLibrary=java8,library=jersey2,serializationLibrary=jackson</argument>
-         					</arguments>
+							</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>target\generated-sources\swagger\src\gen\java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-    
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>target\generated-sources\swagger\src\gen\java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
